@@ -20,7 +20,6 @@ A web application that calculates percentage and CGPA from marks, with features 
 │   ├── styles.css         # CSS styles
 │   ├── script.js          # Main JavaScript file
 │   ├── memeGenerator.js   # Meme generation functionality
-│   └── location.js        # Location detection functionality
 ├── server.js              # Node.js server
 ├── package.json           # Project dependencies
 └── README.md             # Project documentation
@@ -53,11 +52,6 @@ A web application that calculates percentage and CGPA from marks, with features 
 - Responsive meme container
 - Dynamic text styling
 - Share and download functionality
-
-### location.js
-- IP-based location detection
-- Location data formatting
-- Error handling
 
 ## Setup
 
