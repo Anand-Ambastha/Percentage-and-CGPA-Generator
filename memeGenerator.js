@@ -173,6 +173,51 @@ async function createMeme(percentage, cgpa) {
     return memeContainer;
 }
 
+// Function to generate multiple memes
+async function generateMultipleMemes(percentage, cgpa, count = 3) {
+    const resultsSection = document.getElementById('results');
+    const memeSection = document.getElementById('meme-section');
+    
+    // Clear previous memes
+    memeSection.innerHTML = '';
+    
+    // Generate specified number of memes
+    for (let i = 0; i < count; i++) {
+        const memeContainer = await createMeme(percentage, cgpa);
+        memeSection.appendChild(memeContainer);
+        
+        // Add share buttons for each meme
+        const shareButtons = document.createElement('div');
+        shareButtons.className = 'share-buttons';
+        shareButtons.style.marginTop = '10px';
+        shareButtons.style.textAlign = 'center';
+        
+        // Add share options
+        const platforms = ['WhatsApp', 'Facebook', 'Twitter', 'Email'];
+        platforms.forEach(platform => {
+            const button = document.createElement('button');
+            button.textContent = `Share on ${platform}`;
+            button.className = 'share-button';
+            button.onclick = () => shareOnPlatform(platform, percentage, cgpa);
+            shareButtons.appendChild(button);
+        });
+        
+        // Add download button
+        const downloadButton = document.createElement('button');
+        downloadButton.textContent = 'Download Meme';
+        downloadButton.className = 'download-button';
+        downloadButton.onclick = () => downloadMeme(memeContainer);
+        shareButtons.appendChild(downloadButton);
+        
+        memeSection.appendChild(shareButtons);
+    }
+    
+    // Add a small delay before reloading to ensure all memes are displayed
+    setTimeout(() => {
+        window.location.reload();
+    }, 5000); // Reload after 5 seconds
+}
+
 // Function to share meme
 async function shareMeme(percentage, cgpa) {
     const memeContainer = await createMeme(percentage, cgpa);
@@ -202,38 +247,64 @@ async function shareMeme(percentage, cgpa) {
     
     // Add to results section
     const resultsSection = document.getElementById('results');
-    resultsSection.appendChild(memeContainer);
-    resultsSection.appendChild(shareButtons);
+    const memeSection = document.getElementById('meme-section');
+    memeSection.innerHTML = ''; // Clear previous memes
+    memeSection.appendChild(memeContainer);
+    memeSection.appendChild(shareButtons);
 }
 
 // Function to share on different platforms
 async function shareOnPlatform(platform, percentage, cgpa) {
-    const meme = await generateMeme(percentage, cgpa);
-    const shareText = `Check out my results! ${meme.text}`;
+    const memeContainer = await createMeme(percentage, cgpa);
     
-    switch(platform) {
-        case 'WhatsApp':
-            window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`);
-            break;
-        case 'Facebook':
-            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`);
-            break;
-        case 'Twitter':
-            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`);
-            break;
-        case 'Email':
-            window.location.href = `mailto:?subject=My Results&body=${encodeURIComponent(shareText)}`;
-            break;
-    }
+    // Convert meme to image
+    html2canvas(memeContainer).then(canvas => {
+        const imageData = canvas.toDataURL('image/png');
+        const shareText = `Check out my results!`;
+        
+        switch(platform) {
+            case 'WhatsApp':
+                // For WhatsApp, we'll share the text and the image URL
+                window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`);
+                break;
+            case 'Facebook':
+                // For Facebook, we'll share the image directly
+                const formData = new FormData();
+                fetch(imageData)
+                    .then(res => res.blob())
+                    .then(blob => {
+                        formData.append('image', blob, 'meme.png');
+                        // Note: Facebook sharing with image requires server-side implementation
+                        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`);
+                    });
+                break;
+            case 'Twitter':
+                // For Twitter, we'll share the text and the image URL
+                window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`);
+                break;
+            case 'Email':
+                // For email, we'll create a download link and attach the image
+                const link = document.createElement('a');
+                link.href = imageData;
+                link.download = 'my-results-meme.png';
+                link.click();
+                window.location.href = `mailto:?subject=My Results&body=${encodeURIComponent(shareText)}`;
+                break;
+        }
+    });
 }
 
 // Function to download meme
 function downloadMeme(memeContainer) {
     // Convert meme to image and download
-    html2canvas(memeContainer).then(canvas => {
+    html2canvas(memeContainer, {
+        scale: 2, // Higher quality
+        useCORS: true, // Enable cross-origin image loading
+        backgroundColor: null // Transparent background
+    }).then(canvas => {
         const link = document.createElement('a');
         link.download = 'my-results-meme.png';
-        link.href = canvas.toDataURL();
+        link.href = canvas.toDataURL('image/png');
         link.click();
     });
 } 
