@@ -1,61 +1,122 @@
-// Meme templates with different styles
-const memeTemplates = {
+// Giphy API configuration
+
+const GIPHY_API_KEY = 'NZInA6192fGJwQMk62VvCIzPb8sjDRun'; // Replace this with your API key from Giphy
+const GIPHY_ENDPOINT = 'https://api.giphy.com/v1/gifs/search';
+
+// Meme text templates
+const memeTexts = {
     success: [
-        {
-            image: 'https://i.imgur.com/example1.jpg',
-            text: 'When you score {percentage}% and your parents are proud! 🎓',
-            style: 'top: 20px; font-size: 24px; color: white; text-shadow: 2px 2px 4px black;'
-        },
-        {
-            image: 'https://i.imgur.com/example2.jpg',
-            text: 'Me with {cgpa} CGPA: I am inevitable! 💪',
-            style: 'bottom: 20px; font-size: 28px; color: white; text-shadow: 2px 2px 4px black;'
-        }
+        'When you score {percentage}% and your parents are proud! 🎓',
+        'Me with {cgpa} CGPA: I am inevitable! 💪',
+        'When you get {percentage}% and everyone asks for your study tips! 🎯'
     ],
     average: [
-        {
-            image: 'https://i.imgur.com/example3.jpg',
-            text: 'When you get {percentage}% and your friends ask how you did 😅',
-            style: 'top: 20px; font-size: 24px; color: white; text-shadow: 2px 2px 4px black;'
-        }
+        'When you get {percentage}% and your friends ask how you did 😅',
+        '{percentage}%? This is fine... Everything is fine... 🔥'
     ],
     improvement: [
-        {
-            image: 'https://i.imgur.com/example4.jpg',
-            text: 'From {previousPercentage}% to {percentage}% - The glow up is real! ✨',
-            style: 'bottom: 20px; font-size: 24px; color: white; text-shadow: 2px 2px 4px black;'
-        }
+        'From {previousPercentage}% to {percentage}% - The glow up is real! ✨',
+        'Getting {percentage}% vs Telling everyone you got {percentage}% 😎'
     ]
 };
 
+// Search terms for different categories
+const searchTerms = {
+    success: [
+        'success kid',
+        'winning',
+        'achievement',
+        'proud moment',
+        'excellent',
+        'perfect score',
+        'top student',
+        'genius'
+    ],
+    average: [
+        'confused math lady',
+        'thinking',
+        'okay',
+        'this is fine',
+        'average student',
+        'meh',
+        'whatever',
+        'shrug'
+    ],
+    improvement: [
+        'improvement',
+        'progress',
+        'better',
+        'growth',
+        'upgrade',
+        'level up',
+        'transformation',
+        'glow up'
+    ]
+};
+
+// Function to get random meme background from Giphy
+async function getRandomMemeBackground(category) {
+    try {
+        const searchTerm = searchTerms[category][Math.floor(Math.random() * searchTerms[category].length)];
+        console.log(`Fetching meme for category: ${category}, search term: ${searchTerm}`);
+        
+        const response = await fetch(`${GIPHY_ENDPOINT}?api_key=${GIPHY_API_KEY}&q=${searchTerm}&limit=10&rating=g`);
+        const data = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(`Giphy API error: ${data.message || 'Unknown error'}`);
+        }
+        
+        if (data.data && data.data.length > 0) {
+            const randomIndex = Math.floor(Math.random() * data.data.length);
+            const selectedGif = data.data[randomIndex];
+            console.log('Successfully fetched meme:', selectedGif.title);
+            return selectedGif.images.original.url;
+        } else {
+            console.log('No memes found for search term:', searchTerm);
+            return 'https://i.imgur.com/8tMuXaP.jpg'; // Fallback image
+        }
+    } catch (error) {
+        console.error('Error fetching meme background:', error);
+        return 'https://i.imgur.com/8tMuXaP.jpg'; // Fallback image
+    }
+}
+
 // Function to generate meme based on results
-function generateMeme(percentage, cgpa) {
+async function generateMeme(percentage, cgpa) {
+    let category;
     let template;
     
-    // Select template based on percentage
+    // Select category based on percentage
     if (percentage >= 90) {
-        template = memeTemplates.success[Math.floor(Math.random() * memeTemplates.success.length)];
+        category = 'success';
     } else if (percentage >= 70) {
-        template = memeTemplates.average[Math.floor(Math.random() * memeTemplates.average.length)];
+        category = 'average';
     } else {
-        template = memeTemplates.improvement[Math.floor(Math.random() * memeTemplates.improvement.length)];
+        category = 'improvement';
     }
 
+    // Get random text template
+    const textTemplate = memeTexts[category][Math.floor(Math.random() * memeTexts[category].length)];
+    
+    // Get random background
+    const backgroundUrl = await getRandomMemeBackground(category);
+    
     // Replace placeholders with actual values
-    let memeText = template.text
+    let memeText = textTemplate
         .replace('{percentage}', percentage)
         .replace('{cgpa}', cgpa);
 
     return {
-        image: template.image,
+        image: backgroundUrl || 'https://i.imgur.com/8tMuXaP.jpg', // Fallback image
         text: memeText,
-        style: template.style
+        style: 'bottom: 20px; font-size: 24px; color: white; text-shadow: 2px 2px 4px black;'
     };
 }
 
 // Function to create and display meme
-function createMeme(percentage, cgpa) {
-    const meme = generateMeme(percentage, cgpa);
+async function createMeme(percentage, cgpa) {
+    const meme = await generateMeme(percentage, cgpa);
     
     // Create meme container
     const memeContainer = document.createElement('div');
@@ -69,15 +130,33 @@ function createMeme(percentage, cgpa) {
     img.src = meme.image;
     img.style.width = '100%';
     img.style.borderRadius = '10px';
+    img.style.aspectRatio = '16/9';
+    img.style.objectFit = 'cover';
     
     // Create text element
     const text = document.createElement('div');
     text.textContent = meme.text;
     text.style.position = 'absolute';
-    text.style.width = '100%';
+
+    text.style.width = 'auto';
+    text.style.maxWidth = '90%';
     text.style.textAlign = 'center';
-    text.style.padding = '10px';
-    text.style = meme.style;
+    text.style.padding = '12px 16px';
+    text.style.background = 'rgba(0,0,0,0.6)';
+    text.style.borderRadius = '10px';
+    text.style.margin = '10px';
+    text.style.boxSizing = 'border-box';
+    text.style.left = '50%';
+    text.style.transform = 'translateX(-50%)';
+    text.style.color = 'white';
+    text.style.fontSize = '24px';
+    text.style.fontWeight = 'bold';
+    text.style.textShadow = '2px 2px 4px black';
+    if (meme.style.includes('top')) {
+        text.style.top = '20px';
+    } else {
+        text.style.bottom = '20px';
+    }
     
     // Add elements to container
     memeContainer.appendChild(img);
@@ -87,8 +166,8 @@ function createMeme(percentage, cgpa) {
 }
 
 // Function to share meme
-function shareMeme(percentage, cgpa) {
-    const memeContainer = createMeme(percentage, cgpa);
+async function shareMeme(percentage, cgpa) {
+    const memeContainer = await createMeme(percentage, cgpa);
     
     // Create share buttons
     const shareButtons = document.createElement('div');
@@ -120,8 +199,8 @@ function shareMeme(percentage, cgpa) {
 }
 
 // Function to share on different platforms
-function shareOnPlatform(platform, percentage, cgpa) {
-    const meme = generateMeme(percentage, cgpa);
+async function shareOnPlatform(platform, percentage, cgpa) {
+    const meme = await generateMeme(percentage, cgpa);
     const shareText = `Check out my results! ${meme.text}`;
     
     switch(platform) {
