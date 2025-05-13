@@ -1,59 +1,52 @@
-# Percentage & CGPA Calculator
+# Percentage and CGPA Calculator
 
-A web application that calculates percentage and CGPA from subject marks, with Google Sheets data storage functionality.
+A modern web-based calculator that helps students calculate their percentage and CGPA based on their subject marks. The calculator automatically detects your location and provides a user-friendly interface for inputting marks.
 
 ## Features
 
-- Calculate percentage and CGPA based on subject marks
-- Support for different education boards (CBSE, ICSE, State Board)
-- Dynamic subject input fields
-- Data storage in Google Sheets
-- Modern and responsive UI
+- **Automatic Location Detection**: Automatically detects and displays your current location
+- **Class Selection**: Supports all classes from 1 to 12
+- **Stream Selection**: For classes 11 and 12, choose between:
+  - Science
+  - Commerce
+  - Humanities
+- **Board Selection**: Choose your educational board
+- **Subject Marks Input**: Enter marks for each subject
+- **Real-time Calculations**: Instantly calculates:
+  - Percentage
+  - CGPA
+- **Responsive Design**: Works seamlessly on both desktop and mobile devices
 
-## Setup Instructions
+## How to Use
 
-1. Make sure you have Node.js installed on your system
-2. Clone this repository
-3. Set up Google Sheets API:
-   - Go to [Google Cloud Console](https://console.cloud.google.com/)
-   - Create a new project
-   - Enable the Google Sheets API
-   - Create a service account and download the credentials JSON file
-   - Rename the downloaded file to `credentials.json` and place it in the project root
-   - Create a new Google Sheet and share it with the service account email
-   - Copy the Spreadsheet ID from the URL (the long string between /d/ and /edit)
-   - Replace `YOUR_SPREADSHEET_ID` in `server.js` with your actual Spreadsheet ID
-
-4. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-5. Start the server:
-   ```bash
-   npm start
-   ```
-
-6. Open `index.html` in your web browser
-
-## Data Storage
-
-The application automatically saves all calculations to your Google Sheet. The sheet contains the following columns:
-
-- Timestamp
-- Board
-- Number of Subjects
-- Subject Marks
-- Percentage
-- CGPA
+1. Open the calculator in your web browser
+2. Your location will be automatically detected
+3. Select your class (1-12)
+4. If you're in class 11 or 12, select your stream
+5. Choose your educational board
+6. Enter marks for each subject
+7. View your calculated percentage and CGPA
 
 ## Technical Details
 
-- Frontend: HTML, CSS, JavaScript
-- Backend: Node.js with Express
-- Data Storage: Google Sheets API
-- CORS enabled for local development
+- Built with HTML5, CSS3, and JavaScript
+- Responsive design using modern CSS features
+- Real-time calculations without page refresh
+- Cross-browser compatible
 
-## Note
+## Getting Started
 
-Make sure to keep your `credentials.json` file secure and never commit it to version control. The Google Sheet should be shared with the service account email address for the application to work properly. 
+1. Clone the repository
+2. Open `index.html` in your web browser
+3. Start calculating!
+
+## Browser Support
+
+- Chrome (recommended)
+- Firefox
+- Safari
+- Edge
+
+## Contributing
+
+Feel free to submit issues and enhancement requests! 
