@@ -128,8 +128,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Display results
-        percentageResult.textContent = `${percentage.toFixed(2)}%`;
-        cgpaResult.textContent = cgpa.toFixed(2);
+        percentageResult.textContent = `Percentage: ${percentage.toFixed(2)}%`;
+        cgpaResult.textContent = `CGPA: ${cgpa.toFixed(2)}`;
+
+        // Generate and display meme
+        shareMeme(percentage.toFixed(2), cgpa.toFixed(2));
 
         // Save data to server
         await saveData({

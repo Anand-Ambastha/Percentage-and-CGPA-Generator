@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Percentage & CGPA Calculator</title>
+    <title>Percentage and CGPA Calculator</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -80,7 +81,16 @@
             </div>
         </div>
     </div>
+
+    <div id="results" class="results-section">
+        <h2>Results</h2>
+        <div id="percentage"></div>
+        <div id="cgpa"></div>
+        <div id="meme-section"></div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="script.js"></script>
+    <script src="memeGenerator.js"></script>
 </body>
 </html> 
