@@ -1,0 +1,14 @@
+{
+  "name": "percentage-cgpa-calculator",
+  "version": "1.0.0",
+  "description": "A calculator for percentage and CGPA with Google Sheets data storage",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "googleapis": "^126.0.1",
+    "cors": "^2.8.5"
+  }
+} 
