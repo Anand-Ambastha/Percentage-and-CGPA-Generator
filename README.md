@@ -1,52 +1,96 @@
 # Percentage and CGPA Calculator
 
-A modern web-based calculator that helps students calculate their percentage and CGPA based on their subject marks. The calculator automatically detects your location and provides a user-friendly interface for inputting marks.
+A web application that calculates percentage and CGPA from marks, with features like data storage in Google Sheets, location detection, and meme generation.
 
 ## Features
 
-- **Automatic Location Detection**: Automatically detects and displays your current location
-- **Class Selection**: Supports all classes from 1 to 12
-- **Stream Selection**: For classes 11 and 12, choose between:
-  - Science
-  - Commerce
-  - Humanities
-- **Board Selection**: Choose your educational board
-- **Subject Marks Input**: Enter marks for each subject
-- **Real-time Calculations**: Instantly calculates:
-  - Percentage
-  - CGPA
-- **Responsive Design**: Works seamlessly on both desktop and mobile devices
+- Calculate percentage and CGPA from marks
+- Support for different education boards (CBSE, ICSE, State Boards)
+- Data storage in Google Sheets
+- Automatic location detection
+- Meme generation with Giphy integration
+- Responsive design
+- Share results on social media
 
-## How to Use
+## Project Structure
 
-1. Open the calculator in your web browser
-2. Your location will be automatically detected
-3. Select your class (1-12)
-4. If you're in class 11 or 12, select your stream
-5. Choose your educational board
-6. Enter marks for each subject
-7. View your calculated percentage and CGPA
+```
+├── public/                 # Public assets and frontend files
+│   ├── index.html         # Main HTML file
+│   ├── styles.css         # CSS styles
+│   ├── script.js          # Main JavaScript file
+│   ├── memeGenerator.js   # Meme generation functionality
+│   └── location.js        # Location detection functionality
+├── server.js              # Node.js server
+├── package.json           # Project dependencies
+└── README.md             # Project documentation
+```
 
-## Technical Details
+## Public Directory Contents
 
-- Built with HTML5, CSS3, and JavaScript
-- Responsive design using modern CSS features
-- Real-time calculations without page refresh
-- Cross-browser compatible
+### index.html
+- Main HTML structure
+- Form for marks input
+- Results display section
+- Meme display area
 
-## Getting Started
+### styles.css
+- Modern and responsive design
+- Custom styling for form elements
+- Meme container styling
+- Share buttons styling
+
+### script.js
+- Main application logic
+- Percentage and CGPA calculations
+- Form handling
+- Google Sheets integration
+- Share functionality
+
+### memeGenerator.js
+- Giphy API integration
+- Meme text generation
+- Responsive meme container
+- Dynamic text styling
+- Share and download functionality
+
+### location.js
+- IP-based location detection
+- Location data formatting
+- Error handling
+
+## Setup
 
 1. Clone the repository
-2. Open `index.html` in your web browser
-3. Start calculating!
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Create a `.env` file with your Google Sheets API credentials:
+   ```
+   GOOGLE_SHEETS_PRIVATE_KEY=your_private_key
+   GOOGLE_SHEETS_CLIENT_EMAIL=your_client_email
+   GOOGLE_SHEETS_SHEET_ID=your_sheet_id
+   GIPHY_API_KEY=your_giphy_api_key
+   ```
+4. Start the server:
+   ```bash
+   npm start
+   ```
+5. Open `http://localhost:3000` in your browser
 
-## Browser Support
+## Dependencies
 
-- Chrome (recommended)
-- Firefox
-- Safari
-- Edge
+- Node.js
+- Express.js
+- Google Sheets API
+- Giphy API
+- HTML2Canvas (for meme download)
 
 ## Contributing
 
-Feel free to submit issues and enhancement requests! 
+Feel free to submit issues and enhancement requests!
+
+## License
+
+This project is licensed under the MIT License. 

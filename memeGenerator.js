@@ -15,8 +15,9 @@ const memeTexts = {
         '{percentage}%? This is fine... Everything is fine... 🔥'
     ],
     improvement: [
-        'From {previousPercentage}% to {percentage}% - The glow up is real! ✨',
-        'Getting {percentage}% vs Telling everyone you got {percentage}% 😎'
+        'Getting {percentage}% and feeling like a boss! 💪',
+        'When you score {percentage}% and prove everyone wrong! 🎯',
+        '{percentage}% and still going strong! 💫'
     ]
 };
 
@@ -105,7 +106,8 @@ async function generateMeme(percentage, cgpa) {
     // Replace placeholders with actual values
     let memeText = textTemplate
         .replace('{percentage}', percentage)
-        .replace('{cgpa}', cgpa);
+        .replace('{cgpa}', cgpa)
+        .replace('{previousPercentage}', Math.floor(percentage * 0.7)); // For improvement memes, show 70% of current score as previous
 
     return {
         image: backgroundUrl || 'https://i.imgur.com/8tMuXaP.jpg', // Fallback image
@@ -122,45 +124,51 @@ async function createMeme(percentage, cgpa) {
     const memeContainer = document.createElement('div');
     memeContainer.className = 'meme-container';
     memeContainer.style.position = 'relative';
-    memeContainer.style.width = '500px';
     memeContainer.style.margin = '20px auto';
+    memeContainer.style.display = 'flex';
+    memeContainer.style.flexDirection = 'column';
+    memeContainer.style.gap = '15px';
+    memeContainer.style.maxWidth = '800px'; // Maximum width for very large images
     
     // Create image element
     const img = document.createElement('img');
     img.src = meme.image;
     img.style.width = '100%';
     img.style.borderRadius = '10px';
-    img.style.aspectRatio = '16/9';
-    img.style.objectFit = 'cover';
+    img.style.objectFit = 'contain'; // Changed to contain to maintain aspect ratio
+    img.style.maxHeight = '500px'; // Maximum height for very tall images
     
     // Create text element
     const text = document.createElement('div');
     text.textContent = meme.text;
-    text.style.position = 'absolute';
-
-    text.style.width = 'auto';
-    text.style.maxWidth = '90%';
+    text.style.width = '100%';
     text.style.textAlign = 'center';
-    text.style.padding = '12px 16px';
-    text.style.background = 'rgba(0,0,0,0.6)';
-    text.style.borderRadius = '10px';
-    text.style.margin = '10px';
-    text.style.boxSizing = 'border-box';
-    text.style.left = '50%';
-    text.style.transform = 'translateX(-50%)';
-    text.style.color = 'white';
-    text.style.fontSize = '24px';
-    text.style.fontWeight = 'bold';
-    text.style.textShadow = '2px 2px 4px black';
-    if (meme.style.includes('top')) {
-        text.style.top = '20px';
-    } else {
-        text.style.bottom = '20px';
-    }
+    text.style.padding = '15px 20px';
+    text.style.background = 'rgba(0, 0, 0, 0.9)';
+    text.style.borderRadius = '15px';
+    text.style.color = '#ffffff';
+    text.style.fontSize = 'clamp(18px, 2vw, 26px)'; // Responsive font size
+    text.style.fontWeight = '800';
+    text.style.textShadow = '3px 3px 6px rgba(0, 0, 0, 0.8)';
+    text.style.border = '3px solid rgba(255, 255, 255, 0.9)';
+    text.style.boxShadow = '0 6px 12px rgba(0, 0, 0, 0.4)';
+    text.style.wordWrap = 'break-word'; // Ensure long text wraps properly
     
     // Add elements to container
     memeContainer.appendChild(img);
     memeContainer.appendChild(text);
+
+    // Wait for image to load to adjust container
+    img.onload = () => {
+        const aspectRatio = img.naturalWidth / img.naturalHeight;
+        if (aspectRatio > 1) {
+            // Landscape image
+            memeContainer.style.width = 'min(800px, 90vw)';
+        } else {
+            // Portrait image
+            memeContainer.style.width = 'min(500px, 90vw)';
+        }
+    };
     
     return memeContainer;
 }
