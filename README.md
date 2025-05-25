@@ -85,8 +85,10 @@ A web application that calculates percentage and CGPA from marks, with features 
 
 Feel free to submit issues and enhancement requests!
 
+
 ## Developer
--ANAND AMBASTHA (AKA Anand Kumar)
+- ANAND AMBASTHA (AKA Anand Kumar)
+
 
 ## License
 
