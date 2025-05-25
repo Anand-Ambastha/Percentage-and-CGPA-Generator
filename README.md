@@ -87,7 +87,8 @@ Feel free to submit issues and enhancement requests!
 
 
 ## Developer
-- ANAND AMBASTHA (AKA Anand Kumar)
+- ANAND AMBASTHA (AKA Anand Kumar)[https://github.com/Anand-Ambastha]
+- (Vasu)[https://github.com/VashuChaudhary] (Deployment)
 
 
 ## License
