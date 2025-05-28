@@ -1,6 +1,7 @@
 # Percentage and CGPA Calculator
 
 A web application that calculates percentage and CGPA from marks, with features like data storage in Google Sheets, location detection, and meme generation.
+https://calculatepercentage-seven.vercel.app/
 
 ## Features
 
